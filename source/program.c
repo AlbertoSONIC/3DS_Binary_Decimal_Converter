@@ -156,7 +156,6 @@ void printinput()
 	
 }
 
-
 //Conversion
 void conversion()
 {
@@ -175,10 +174,10 @@ void printconversion()
 	drawString(buffer, 1, 131, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
 	sprintf(buffer, "Press UP to restart this homebrew.");
-	drawString(buffer, 1, 181, 255, 255, 255, screenBottom, GFX_BOTTOM);
+	drawString(buffer, 1, 211, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
 	sprintf(buffer, "Press DOWN to go back to 3DS main menu.");
-	drawString(buffer, 1, 191, 255, 255, 255, screenBottom, GFX_BOTTOM);
+	drawString(buffer, 1, 221, 255, 255, 255, screenBottom, GFX_BOTTOM);
 }
 void renderconversion()
 {
