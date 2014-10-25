@@ -81,9 +81,18 @@ void program()
 		state = 2;
 	}
 
+	//Press DOWN to go home!!!!!!
+	if (state==2 && input & KEY_DOWN)
+	{
+		aptReturnToMenu();
+	}
+
 	gfxFlushBuffers();
 	gfxSwapBuffers();
 }
+
+
+
 
 //Screen render
 void screenrender()
@@ -165,8 +174,11 @@ void printconversion()
 	sprintf(buffer, "Thank you for using this homebrew!");
 	drawString(buffer, 1, 131, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
-	sprintf(buffer, "Press UP to restart this homebrew");
-	drawString(buffer, 1, 141, 255, 255, 255, screenBottom, GFX_BOTTOM);
+	sprintf(buffer, "Press UP to restart this homebrew.");
+	drawString(buffer, 1, 181, 255, 255, 255, screenBottom, GFX_BOTTOM);
+
+	sprintf(buffer, "Press DOWN to go back to 3DS main menu.");
+	drawString(buffer, 1, 191, 255, 255, 255, screenBottom, GFX_BOTTOM);
 }
 void renderconversion()
 {

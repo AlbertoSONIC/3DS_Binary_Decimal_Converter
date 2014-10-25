@@ -19,6 +19,7 @@ int main()
 
 	while ((status = aptGetStatus()) != APP_EXITING)
 	{
+
 		if (status == APP_RUNNING)
 		{
 			//If the app is currently in the forground running, execute the program.
