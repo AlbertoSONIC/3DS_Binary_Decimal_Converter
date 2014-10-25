@@ -12,7 +12,7 @@
 int converted = 0;
 int bit = 0;
 int state = 0;
-int val[8];
+int val[8]; //Change this "8" before compiling in order to change binary number lenght
 int valtoprint;
 int position = 1;
 char* A = "1";
@@ -159,7 +159,18 @@ void printinput()
 //Conversion
 void conversion()
 {
-	converted += val[7] * 1 + val[6] * 2 + val[5] * 4 + val[4] * 8 + val[3] * 16 + val[2] * 32 + val[1] * 64 + val[0] * 128;
+
+	//New conversion method: uses a for in order to accept any binary number lenght
+	int result;
+	int k = bit - 1;
+	int i;
+	for (i = 0; i<bit; i++)
+	{
+		result = val[k] << i;
+		converted = converted + result;
+		k = k - 1;
+	}
+
 	renderconversion();
 }
 
