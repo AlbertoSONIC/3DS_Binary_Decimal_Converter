@@ -12,6 +12,7 @@
 int converted = 0;
 int bit = 0;
 int state = 0;
+int refreshrequired = 0;
 int val[8]; //Change this "8" before compiling in order to change binary number lenght
 int valtoprint;
 int position = 1;
@@ -85,8 +86,15 @@ void program()
 	if (state==2 && input & KEY_DOWN)
 	{
 		aptReturnToMenu();
+		refreshrequired = 1;
 	}
-
+	//refresh required checks if you went back to home and then back to homebrew. If so, it needs to refresh graphics.
+	if (refreshrequired == 1)
+	{
+		gfxFlushBuffers();
+		gfxSwapBuffers();
+		refreshrequired = 0;
+	}
 	
 }
 
@@ -181,13 +189,13 @@ void printconversion()
 	drawString(buffer, 1, 111, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
 	sprintf(buffer, "Thank you for using this homebrew!");
-	drawString(buffer, 1, 131, 255, 255, 255, screenBottom, GFX_BOTTOM);
+	drawString(buffer, 1, 141, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
 	sprintf(buffer, "Press UP to restart this homebrew.");
-	drawString(buffer, 1, 211, 255, 255, 255, screenBottom, GFX_BOTTOM);
+	drawString(buffer, 1, 221, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
 	sprintf(buffer, "Press DOWN to go back to 3DS main menu.");
-	drawString(buffer, 1, 221, 255, 255, 255, screenBottom, GFX_BOTTOM);
+	drawString(buffer, 1, 231, 255, 255, 255, screenBottom, GFX_BOTTOM);
 }
 void renderconversion()
 {
