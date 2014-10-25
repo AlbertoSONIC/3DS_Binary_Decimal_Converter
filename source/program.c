@@ -87,8 +87,7 @@ void program()
 		aptReturnToMenu();
 	}
 
-	gfxFlushBuffers();
-	gfxSwapBuffers();
+	
 }
 
 
