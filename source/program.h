@@ -11,5 +11,6 @@ void conversion();
 void printconversion();
 void renderconversion();
 void printbottominit();
+void printtop();
 
 #endif

@@ -14,7 +14,7 @@
 int converted = 0;
 int max = 8;
 int bit = 0;
-int state = 25;
+int state = 10;
 int refreshrequired = 0;
 int valtoprint;
 int val[100];
@@ -23,7 +23,8 @@ char* A = "1";
 char* B = "0";
 u32 input;
 u8* screenBottom = 0;
-
+u8* screenTopLeft = 0;
+u8* screenTopRight = 0;
 
 void variablereset()
 {
@@ -43,6 +44,30 @@ void program()
 {
 	hidScanInput();
 	input = hidKeysDown();
+
+	//Top screen print
+	if (state == 10)
+	{
+		screenTopLeft = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+		screenTopRight = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+		clearScreen(screenTopLeft, GFX_LEFT);
+		clearScreen(screenTopRight, GFX_LEFT);
+
+		printtop();
+		gfxFlushBuffers();
+		gfxSwapBuffers();
+		screenTopLeft = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+		screenTopRight = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+		printtop();
+		gfxFlushBuffers();
+		gfxSwapBuffers();
+		screenTopLeft = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+		screenTopRight = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+
+		state = 25;
+
+
+	}
 
 	//Init
 	if (state == 25 || (state==2 && input & KEY_SELECT))
@@ -162,28 +187,18 @@ void maintitle()
 	clearScreen(screenBottom, GFX_BOTTOM);
 
 	char buffer[100];
-	sprintf(buffer, "***************************************");
-	drawString(buffer, 1, 1, 255, 255, 255, screenBottom, GFX_BOTTOM);
-
-	sprintf(buffer, "*                                     *");
-	drawString(buffer, 1, 11, 255, 255, 255, screenBottom, GFX_BOTTOM);
-
-	sprintf(buffer, "*     Binary -> Decimal Converter     *");
-	drawString(buffer, 1, 21, 255, 255, 255, screenBottom, GFX_BOTTOM);
-
-    sprintf(buffer, "*                                     *");
-	drawString(buffer, 1, 31, 255, 255, 255, screenBottom, GFX_BOTTOM);
-
-	sprintf(buffer, "*****  by AlbertoSONIC and Relys ******");
-	drawString(buffer, 1, 41, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
 	sprintf(buffer, "Insert a binary number that you want to");
-	drawString(buffer, 1, 61, 255, 255, 255, screenBottom, GFX_BOTTOM);
+	drawString(buffer, 1, 1, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
 	sprintf(buffer, "convert (A=1, B=0, max %d)", max);
+	drawString(buffer, 1, 11, 255, 255, 255, screenBottom, GFX_BOTTOM);
+
+	sprintf(buffer, "INSERTED:");
 	drawString(buffer, 1, 71, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
 }
+
 
 
 //Input rendering
@@ -253,4 +268,105 @@ void renderconversion()
 	screenrender();
 	printconversion();
 	screenrender();
+}
+
+
+void printtop()
+{
+	char buffer[100];
+	sprintf(buffer, "*************************************************");
+	drawString(buffer, 1, 1, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 1, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "*************************************************");
+	drawString(buffer, 1, 11, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 11, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 21, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 21, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 31, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 31, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 41, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 41, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 51, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 51, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**          3DS Binary ---> Decimal            **");
+	drawString(buffer, 1, 61, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 61, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**              -  CONVERTER  -                **");
+	drawString(buffer, 1, 71, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 71, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 81, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 81, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 91, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 91, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 101, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 101, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 111, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 111, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "*************************************************");
+	drawString(buffer, 1, 121, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 121, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "*************************************************");
+	drawString(buffer, 1, 131, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 131, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 141, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 141, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 151, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 151, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 161, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 161, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**               Developed by                  **");
+	drawString(buffer, 1, 171, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 171, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 181, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 181, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**           AlbertoSONIC and Relys            **");
+	drawString(buffer, 1, 191, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 191, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 201, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 201, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "**                                             **");
+	drawString(buffer, 1, 211, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 211, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "*************************************************");
+	drawString(buffer, 1, 221, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 221, 255, 255, 255, screenTopRight, GFX_LEFT);
+
+	sprintf(buffer, "*************************************************");
+	drawString(buffer, 1, 231, 255, 255, 255, screenTopLeft, GFX_LEFT);
+	drawString(buffer, 1, 231, 255, 255, 255, screenTopRight, GFX_LEFT);
 }
