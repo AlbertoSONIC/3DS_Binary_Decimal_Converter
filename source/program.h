@@ -10,5 +10,6 @@ void printinput();
 void conversion();
 void printconversion();
 void renderconversion();
+void printbottominit();
 
 #endif

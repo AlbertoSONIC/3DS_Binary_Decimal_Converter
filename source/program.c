@@ -9,26 +9,29 @@
 //For sprintF
 #include <stdio.h>
 
+
+//STATE: 0=start, 2=end, 1=on going, 25=init
 int converted = 0;
+int max = 8;
 int bit = 0;
-int state = 0;
+int state = 25;
 int refreshrequired = 0;
-int val[8]; //Change this "8" before compiling in order to change binary number lenght
 int valtoprint;
+int val[100];
 int position = 1;
 char* A = "1";
 char* B = "0";
 u32 input;
 u8* screenBottom = 0;
 
+
 void variablereset()
 {
 	position = 1;
-	state = 0;
 	bit = 0;
 		converted = 0;
 		int ii;
-		for (ii = 0; ii<8; ii++)
+		for (ii = 0; ii<max; ii++)
 		{
 			val[ii] = 0;
 		}
@@ -41,12 +44,41 @@ void program()
 	hidScanInput();
 	input = hidKeysDown();
 
+	//Init
+	if (state == 25 || (state==2 && input & KEY_SELECT))
+	{
+		state = 25;
+		screenBottom = gfxGetFramebuffer(GFX_BOTTOM, GFX_BOTTOM, NULL, NULL);
+		
+		printbottominit();
+		screenrender();
+
+
+		if (input&KEY_R)
+		{
+			max = max + 1;
+		}
+
+		if (input & KEY_L)
+		{
+			max = max - 1;
+		}
+
+		if (input & KEY_START)
+		{
+			state = 0;
+			bit = max;
+			
+		}
+	}
 	//If first boot or time to reset
 	if (state == 0 || (state == 2 && input & KEY_UP))
 	{
 
 		screenBottom = gfxGetFramebuffer(GFX_BOTTOM, GFX_BOTTOM, NULL, NULL);
+
 		clearScreen(screenBottom, GFX_BOTTOM);
+
 		variablereset();
 		maintitle();
 		screenrender();
@@ -56,7 +88,7 @@ void program()
 	}
 
 	//If normal state, take input
-	if (bit < 8)
+	if (bit < max || state==1)
 	{
 		if (input & KEY_A)
 		{
@@ -76,7 +108,7 @@ void program()
 	}
 
 	//If bit limit reached, then it's time to convert
-	if (bit == 8 && state!=2)
+	if (bit == max && state==1)
 	{
         conversion();
 		state = 2;
@@ -94,11 +126,26 @@ void program()
 		gfxFlushBuffers();
 		gfxSwapBuffers();
 		refreshrequired = 0;
-	}
-	
+	}	
 }
 
 
+void printbottominit()
+{
+	clearScreen(screenBottom, GFX_BOTTOM);
+	char buffer[100];
+	sprintf(buffer, "Choose binary number lenght.");
+	drawString(buffer, 1, 1, 255, 255, 255, screenBottom, GFX_BOTTOM);
+
+	sprintf(buffer, "The actual one is %d", max);
+	drawString(buffer, 1, 11, 255, 255, 255, screenBottom, GFX_BOTTOM);
+
+	sprintf(buffer, "Use L and R buttons to change it.");
+	drawString(buffer, 1, 31, 255, 255, 255, screenBottom, GFX_BOTTOM);
+
+	sprintf(buffer, "Press START to confirm.");
+	drawString(buffer, 1, 41, 255, 255, 255, screenBottom, GFX_BOTTOM);
+}
 
 
 //Screen render
@@ -133,7 +180,7 @@ void maintitle()
 	sprintf(buffer, "Insert a binary number that you want to");
 	drawString(buffer, 1, 61, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
-	sprintf(buffer, "convert (A=1, B=0, max 8bit)");
+	sprintf(buffer, "convert (A=1, B=0, max %d)", max);
 	drawString(buffer, 1, 71, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
 }
@@ -191,7 +238,10 @@ void printconversion()
 	sprintf(buffer, "Thank you for using this homebrew!");
 	drawString(buffer, 1, 141, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
-	sprintf(buffer, "Press UP to restart this homebrew.");
+	sprintf(buffer, "Press UP to insert a new binary num.");
+	drawString(buffer, 1, 211, 255, 255, 255, screenBottom, GFX_BOTTOM);
+
+	sprintf(buffer, "Press SELECT to change bin. num. lenght.");
 	drawString(buffer, 1, 221, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
 	sprintf(buffer, "Press DOWN to go back to 3DS main menu.");
