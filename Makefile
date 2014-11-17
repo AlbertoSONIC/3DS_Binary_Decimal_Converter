@@ -28,6 +28,9 @@ SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
 
+APP_TITLE       := 3DS Binary --> Decimal Converter
+APP_DESCRIPTION := You put a binary number, you get a decimal one!
+APP_AUTHOR      := AlbertoSONIC
 
 #---------------------------------------------------------------------------------
 # options for code generation
