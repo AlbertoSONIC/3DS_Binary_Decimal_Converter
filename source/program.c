@@ -9,19 +9,24 @@
 //For sprintF
 #include <stdio.h>
 
+//NOTICE: Rendering commands are not here anymore. You can find them into rendering.c file.
 
-//STATE: 0=start, 2=end, 1=on going, 25=init
 int converted = 0;
 int max = 8;
 int bit = 0;
+//STATE: 0=start, 2=end, 1=on going, 25=init
 int state = 10;
-int refreshrequired = 0;
+//r= program revision
+int rev = 15;
+//Binary conversion variables
 int valtoprint;
 int val[100];
 int position = 1;
 char* A = "1";
 char* B = "0";
 u32 input;
+
+//Screen variables
 u8* screenBottom = 0;
 u8* screenTopLeft = 0;
 u8* screenTopRight = 0;
@@ -48,32 +53,19 @@ void program()
 	//Top screen print
 	if (state == 10)
 	{
-		screenTopLeft = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
-		screenTopRight = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
-		clearScreen(screenTopLeft, GFX_LEFT);
-		clearScreen(screenTopRight, GFX_LEFT);
-
+		cleartop();
+        printtop();
+		screenrender();
 		printtop();
-		gfxFlushBuffers();
-		gfxSwapBuffers();
-		screenTopLeft = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
-		screenTopRight = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
-		printtop();
-		gfxFlushBuffers();
-		gfxSwapBuffers();
-		screenTopLeft = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
-		screenTopRight = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+		screenrender();
 
 		state = 25;
-
-
 	}
 
 	//Init
 	if (state == 25 || (state==2 && input & KEY_SELECT))
 	{
 		state = 25;
-		screenBottom = gfxGetFramebuffer(GFX_BOTTOM, GFX_BOTTOM, NULL, NULL);
 		
 		printbottominit();
 		screenrender();
@@ -96,15 +88,13 @@ void program()
 			
 		}
 	}
+
 	//If first boot or time to reset
 	if (state == 0 || (state == 2 && input & KEY_UP))
 	{
 
-		screenBottom = gfxGetFramebuffer(GFX_BOTTOM, GFX_BOTTOM, NULL, NULL);
-
-		clearScreen(screenBottom, GFX_BOTTOM);
-
-		variablereset();
+		clearbottom();
+        variablereset();
 		maintitle();
 		screenrender();
 		maintitle();
@@ -140,18 +130,11 @@ void program()
 	}
 
 	//Press DOWN to go home!!!!!!
-	if (state==2 && input & KEY_DOWN)
+	if (input & KEY_DOWN)
 	{
 		aptReturnToMenu();
-		refreshrequired = 1;
+		screenrefresh();
 	}
-	//refresh required checks if you went back to home and then back to homebrew. If so, it needs to refresh graphics.
-	if (refreshrequired == 1)
-	{
-		gfxFlushBuffers();
-		gfxSwapBuffers();
-		refreshrequired = 0;
-	}	
 }
 
 
@@ -170,15 +153,9 @@ void printbottominit()
 
 	sprintf(buffer, "Press START to confirm.");
 	drawString(buffer, 1, 41, 255, 255, 255, screenBottom, GFX_BOTTOM);
-}
 
-
-//Screen render
-void screenrender()
-{
-	gfxFlushBuffers();
-	gfxSwapBuffers();
-	screenBottom = gfxGetFramebuffer(GFX_BOTTOM, GFX_BOTTOM, NULL, NULL);
+	sprintf(buffer, "Press DOWN to go back to 3DS main menu.");
+	drawString(buffer, 1, 231, 255, 255, 255, screenBottom, GFX_BOTTOM);
 }
 
 //Main screen
@@ -197,9 +174,9 @@ void maintitle()
 	sprintf(buffer, "INSERTED:");
 	drawString(buffer, 1, 71, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
+	sprintf(buffer, "Press DOWN to go back to 3DS main menu.");
+	drawString(buffer, 1, 231, 255, 255, 255, screenBottom, GFX_BOTTOM);
 }
-
-
 
 //Input rendering
 void renderinput()
@@ -239,8 +216,7 @@ void conversion()
 		converted = converted + result;
 		k = k - 1;
 	}
-
-	renderconversion();
+    renderconversion();
 }
 
 void printconversion()
@@ -259,8 +235,6 @@ void printconversion()
 	sprintf(buffer, "Press SELECT to change bin. num. lenght.");
 	drawString(buffer, 1, 221, 255, 255, 255, screenBottom, GFX_BOTTOM);
 
-	sprintf(buffer, "Press DOWN to go back to 3DS main menu.");
-	drawString(buffer, 1, 231, 255, 255, 255, screenBottom, GFX_BOTTOM);
 }
 void renderconversion()
 {
@@ -338,19 +312,19 @@ void printtop()
 	drawString(buffer, 1, 151, 255, 255, 255, screenTopLeft, GFX_LEFT);
 	drawString(buffer, 1, 151, 255, 255, 255, screenTopRight, GFX_LEFT);
 
-	sprintf(buffer, "**                                             **");
+    sprintf(buffer, "**               Developed by                  **");
 	drawString(buffer, 1, 161, 255, 255, 255, screenTopLeft, GFX_LEFT);
 	drawString(buffer, 1, 161, 255, 255, 255, screenTopRight, GFX_LEFT);
 
-	sprintf(buffer, "**               Developed by                  **");
+	sprintf(buffer, "**                                             **");
 	drawString(buffer, 1, 171, 255, 255, 255, screenTopLeft, GFX_LEFT);
 	drawString(buffer, 1, 171, 255, 255, 255, screenTopRight, GFX_LEFT);
 
-	sprintf(buffer, "**                                             **");
+	sprintf(buffer, "**           AlbertoSONIC and Relys            **");
 	drawString(buffer, 1, 181, 255, 255, 255, screenTopLeft, GFX_LEFT);
 	drawString(buffer, 1, 181, 255, 255, 255, screenTopRight, GFX_LEFT);
 
-	sprintf(buffer, "**           AlbertoSONIC and Relys            **");
+	sprintf(buffer, "**                                             **");
 	drawString(buffer, 1, 191, 255, 255, 255, screenTopLeft, GFX_LEFT);
 	drawString(buffer, 1, 191, 255, 255, 255, screenTopRight, GFX_LEFT);
 
@@ -358,7 +332,7 @@ void printtop()
 	drawString(buffer, 1, 201, 255, 255, 255, screenTopLeft, GFX_LEFT);
 	drawString(buffer, 1, 201, 255, 255, 255, screenTopRight, GFX_LEFT);
 
-	sprintf(buffer, "**                                             **");
+	sprintf(buffer, "** Rev %d                                      **", rev);
 	drawString(buffer, 1, 211, 255, 255, 255, screenTopLeft, GFX_LEFT);
 	drawString(buffer, 1, 211, 255, 255, 255, screenTopRight, GFX_LEFT);
 
@@ -370,3 +344,40 @@ void printtop()
 	drawString(buffer, 1, 231, 255, 255, 255, screenTopLeft, GFX_LEFT);
 	drawString(buffer, 1, 231, 255, 255, 255, screenTopRight, GFX_LEFT);
 }
+
+
+//----------------------------------------- SCREEN RENDERING UTILS -------------------------------------------------
+
+//Screen rendering (both top and bottom)
+void screenrender()
+{
+	gfxFlushBuffers();
+	gfxSwapBuffers();
+	screenBottom = gfxGetFramebuffer(GFX_BOTTOM, GFX_BOTTOM, NULL, NULL);
+	screenTopLeft = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+	screenTopRight = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+}
+
+//Screen refreshing (required if going back to app from Home Menu)
+void screenrefresh()
+{
+	gfxFlushBuffers();
+	gfxSwapBuffers();
+}
+
+//Clears the top screen
+void cleartop()
+{
+	screenTopLeft = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+	screenTopRight = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
+	clearScreen(screenTopLeft, GFX_LEFT);
+	clearScreen(screenTopRight, GFX_LEFT);
+}
+
+//Clears the bottom screen
+void clearbottom()
+{
+	screenBottom = gfxGetFramebuffer(GFX_BOTTOM, GFX_BOTTOM, NULL, NULL);
+	clearScreen(screenBottom, GFX_BOTTOM);
+}
+

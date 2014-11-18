@@ -2,7 +2,6 @@
 #define PROGRAM_H
 
 void maintitle();
-void screenrender();
 void program();
 void renderinput();
 void variablereset();
@@ -12,5 +11,12 @@ void printconversion();
 void renderconversion();
 void printbottominit();
 void printtop();
+
+void screenrender();
+void screenrefresh();
+void clearbottom();
+void cleartop();
+
+
 
 #endif
