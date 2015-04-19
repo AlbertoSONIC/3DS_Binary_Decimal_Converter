@@ -1,30 +1,56 @@
-#include "main.h"
-#include "program.h"
-
-/* New ctrulib */
 #include <3ds.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <malloc.h>
+#include "main.h"
+#include "app.h"
+#include "draw.h"
+#include "input.h"
+#include "rendering.h"
+
+//FPS Counter
+bool GW_MODE;
+
 int main()
 {
-	//Initialize 3ds services
+	// Initialize services
 	srvInit();
-	fsInit();
 	aptInit();
-	gfxInit();
 	hidInit(NULL);
+	gfxInitDefault();
 
 	// Main loop
 	while (aptMainLoop())
 	{
+		//As nop90 suggested
+		getFB();
+
+		//Gets input (keys and touch)
+		getInput();
+
+		//Prints the GUI
+		printGUI();  
+
+		//Do stuff
+		app();
+
+		//Exit code
+		if (input & KEY_START) break;
+	
+		// Flush and swap framebuffers
+		gfxFlushBuffers();
+		gfxSwapBuffers();
+
+		//Wait for VBlank
 		gspWaitForVBlank();
-		program();
+
 	}
 
-	//Close all opened services.
-	hidExit();
+	// Exit services
 	gfxExit();
+	hidExit();
 	aptExit();
 	srvExit();
-	//Kill the process.
-	svcExitProcess();
 	return 0;
 }
