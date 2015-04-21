@@ -50,8 +50,8 @@ void app()
 	else if ((posX >= 10 && posX <= 51) && (posY >= 100 && posY <= 140))PRESSED_NUMBER = 7;
 	else if ((posX >= 55 && posX <= 95) && (posY >= 100 && posY <= 140))PRESSED_NUMBER = 8;
 	else if ((posX >= 100 && posX <= 140) && (posY >= 100 && posY <= 140))PRESSED_NUMBER = 9;
-	else if ((posX >= 10 && posX <= 77) && (posY >= 163 && posY <= 193))PRESSED_NUMBER = 0;
-	else if ((posX >= 82 && posX <= 140) && (posY >= 163 && posY <= 193)) PRESSED_NUMBER = -1; //Decimal "Cancel" button//BINARY KEYBOARD
+	else if ((posX >= 10 && posX <= 77) && (posY >= 145 && posY <= 193))PRESSED_NUMBER = 0;
+	else if ((posX >= 82 && posX <= 140) && (posY >= 145 && posY <= 193)) PRESSED_NUMBER = -1; //Decimal "Cancel" button//BINARY KEYBOARD
 	else if ((posX >= 124 && posX <= 184) && (posY >= 202 && posY <= 236))PRESSED_NUMBER = 20; //Binary "0"
 	else if ((posX >= 59 && posX <= 118) && (posY >= 202 && posY <= 236))PRESSED_NUMBER = 21; //Binary "1"
 	else if ((posX >= 189 && posX <= 250) && (posY >= 202 && posY <= 236)) PRESSED_NUMBER = -2; //Binary "Cancel" button//HEX KEYBOARD
