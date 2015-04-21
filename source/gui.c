@@ -18,7 +18,7 @@ int time = 0;
 
 char buffer[100];
 
-void guiTop(unsigned long long decimal, unsigned  long long binary)
+void guiTop(unsigned long long decimal, unsigned  long long binary, char hex[] )
 {
 	//Background
 	gfxDrawSprite(GFX_TOP, GFX_LEFT, (u8*)top_bin, 240, 400, 0, 0);
@@ -28,18 +28,20 @@ void guiTop(unsigned long long decimal, unsigned  long long binary)
 	gfxDrawText(GFX_TOP, GFX_LEFT, NULL, "3DS Binary Decimal Converter", 5, 238 - fontDefault.height * 1);
 	guiClock();
 
-	//Prints the score
+	//Prints the converted values
 	sprintf(buffer, "%llu", decimal);
-	gfxDrawText(GFX_TOP, GFX_LEFT, NULL, buffer, 30, 240 - fontDefault.height * 10);
+	gfxDrawText(GFX_TOP, GFX_LEFT, NULL, buffer, 30, 135);
+	sprintf(buffer, "%s", hex);
+	gfxDrawText(GFX_TOP, GFX_LEFT, NULL, buffer,270, 135);
 	sprintf(buffer, "%llu", binary);
-	gfxDrawText(GFX_TOP, GFX_LEFT, NULL, buffer, 240, 240 - fontDefault.height * 10);
+	gfxDrawText(GFX_TOP, GFX_LEFT, NULL, buffer, 130, 23);
 }
 
 void guiBottom()
 {
 	//Draw BackGround
 	gfxDrawSprite(GFX_BOTTOM, GFX_LEFT, (u8*)bottom_bin, 240, 320, 0, 0);
-	gfxDrawText(GFX_BOTTOM, GFX_LEFT, NULL, "Developed by AlbertoSONIC", 85, 240 - fontDefault.height * 15);
+	//gfxDrawText(GFX_BOTTOM, GFX_LEFT, NULL, "Developed by AlbertoSONIC", 85, 240 - fontDefault.height * 15);
 }
 
 void guiClock()
